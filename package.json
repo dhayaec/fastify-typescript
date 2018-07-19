@@ -1,0 +1,19 @@
+{
+  "name": "tsapp",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "dependencies": {
+    "@types/cors": "^2.8.4",
+    "cors": "^2.8.4",
+    "fastify": "^1.8.0"
+  },
+  "devDependencies": {
+    "typescript": "^2.9.2"
+  },
+  "scripts": {
+    "compile": "tsc --project ./",
+    "start": "rm -rf ./dist && npm run compile && node ./dist/",
+    "debug": "rm -rf ./dist && npm run compile && node --inspect ./dist/"
+  }
+}
