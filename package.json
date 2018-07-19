@@ -9,11 +9,34 @@
     "fastify": "^1.8.0"
   },
   "devDependencies": {
+    "@types/jest": "^23.3.0",
+    "jest": "^23.4.1",
+    "ts-jest": "^23.0.1",
+    "ts-node": "^7.0.0",
+    "tslint": "^5.11.0",
+    "tslint-config-airbnb": "^5.9.2",
+    "tslint-config-prettier": "^1.13.0",
     "typescript": "^2.9.2"
   },
   "scripts": {
     "compile": "tsc --project ./",
     "start": "rm -rf ./dist && npm run compile && node ./dist/",
-    "debug": "rm -rf ./dist && npm run compile && node --inspect ./dist/"
+    "debug": "rm -rf ./dist && npm run compile && node --inspect ./dist/",
+    "lint": "tslint -c tslint.json 'src/**/*.ts'",
+    "test": "NODE_ENV=test jest --watch"
+  },
+  "jest": {
+    "transform": {
+      "^.+\\.ts?$": "ts-jest"
+    },
+    "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js",
+      "jsx",
+      "json",
+      "node"
+    ]
   }
 }

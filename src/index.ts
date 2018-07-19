@@ -1,19 +1,12 @@
-import * as fastify from 'fastify';
+import { Reply, Request } from './types/index';
 import * as cors from 'cors';
+import * as fastify from 'fastify';
 import { createReadStream } from 'fs';
-import * as http from 'http';
+import { AddressInfo } from 'net';
+
+const port = 3000;
 
 const server = fastify();
-
-const hello = () => {
-  const d = 4;
-  const a = 6;
-  const c = a + d;
-  console.log('called');
-  return c;
-};
-
-hello();
 
 const opts = {
   schema: {
@@ -30,30 +23,30 @@ const opts = {
   }
 };
 
-function getHelloHandler(
-  req: fastify.FastifyRequest<http.IncomingMessage>,
-  reply: fastify.FastifyReply<http.ServerResponse>
-) {
+function getHelloHandler(req: Request, reply: Reply) {
   reply.header('Content-Type', 'application/json').code(200);
   reply.send({ hello: 'world' });
 }
 
-function getStreamHandler(
-  req: fastify.FastifyRequest<http.IncomingMessage>,
-  reply: fastify.FastifyReply<http.ServerResponse>
-) {
-  const stream = createReadStream(
-    process.cwd() + '/examples/plugin.js',
-    'utf8'
-  );
-  reply.code(200).send(stream);
+function getStreamHandler(req: Request, reply: Reply) {
+  const stream = createReadStream(process.cwd() + '/package.json', 'utf8');
+  reply
+    .code(200)
+    .type('application/json')
+    .send(stream);
 }
 
 server.use(cors() as any);
+
 server.get('/', opts, getHelloHandler);
+
 server.get('/stream', getStreamHandler);
 
-server.listen(3000, err => {
-  if (err) throw err;
-  console.log(`on ${server.server.address()}`);
+server.listen(port, err => {
+  if (err) {
+    throw err;
+  }
+  const { port } = server.server.address() as AddressInfo;
+
+  console.log(`listening ${port}`);
 });
